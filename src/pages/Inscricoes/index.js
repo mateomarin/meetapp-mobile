@@ -9,6 +9,7 @@ import api from '~/services/api';
 import Background from '~/components/Background';
 import Header from '~/components/Header';
 import Meetup from '~/components/Meetup';
+import Empty from '~/components/Empty';
 
 import { MeetupList } from './styles';
 
@@ -56,7 +57,8 @@ export default function Inscricoes() {
   return (
     <Background>
       <Header />
-      <MeetupList
+      {bookings.length === 0 && <Empty msg="Você não está inscrito em nenhum evento"/> }
+      {bookings.length !== 0 && <MeetupList
         data={bookings}
         keyExtractor={booking => String(booking.id)}
         renderItem={({ item }) => (
@@ -66,7 +68,7 @@ export default function Inscricoes() {
             onCancel={() => cancelBooking(item)}
           />
         )}
-      />
+      />}
     </Background>
   );
 }

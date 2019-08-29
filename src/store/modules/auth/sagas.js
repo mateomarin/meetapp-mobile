@@ -43,13 +43,15 @@ export function* signIn({ payload }) {
 export function* signUp({ payload }) {
   try {
     const { name, email, password } = payload;
-    yield call(api.post, 'users', {
+    const response = yield call(api.post, 'users', {
       name,
       email,
       password,
-      provider: true,
+      provider: false,
     });
-    // history.push('/');
+    const { token, user } = response.data;
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    yield put(signInSuccess(token, user));
   } catch (err) {
     Alert.alert(
       'Falha na Autenticação',

@@ -10,6 +10,9 @@ import Background from '~/components/Background';
 import DateInput from '~/components/DateInput';
 import Header from '~/components/Header';
 import Meetup from '~/components/Meetup';
+import Empty from '~/components/Empty';
+
+import { signOut } from '~/store/modules/auth/actions';
 
 import { MeetupList } from './styles';
 
@@ -89,14 +92,15 @@ export default function Dashboard() {
     <Background>
       <Header />
       <DateInput date={date} onChange={setDate} />
-      <MeetupList
+      {meetups.length === 0 && <Empty msg="Não há eventos nesta data"/> }
+      {meetups.length !== 0 && (<MeetupList
         data={meetups}
         keyExtractor={meetup => String(meetup.id)}
         onEndReached={() => !endReached && loadMore()}
         renderItem={({ item }) => (
           <Meetup item={item} onSignUp={() => signUp(item)} />
         )}
-      />
+      />)}
     </Background>
   );
 }
